@@ -50,7 +50,7 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView textView = (TextView) view;
-        Toast.makeText(this, "You clicked on " + textView.getText() + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You clicked on " + textView.getText() + "at position " + position, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "You clicked on cell number " + position);
     }
 }
