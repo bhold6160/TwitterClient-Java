@@ -16,6 +16,11 @@ public class BHTweet {
 
     public BHUser user;
 
+    @Override
+    public String toString() {
+        return text;
+    }
+
     public BHTweet(JSONObject tweetObject) {
         try {
             this.text = tweetObject.getString("text");
