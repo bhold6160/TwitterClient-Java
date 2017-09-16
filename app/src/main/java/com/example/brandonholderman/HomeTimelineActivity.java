@@ -36,12 +36,6 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
         for (BHTweet tweet : allTweets) {
             Log.d(TAG, "Tweet Text: " + tweet.text);
         }
-
-//        public void onItemClick(AdapterView<?> parent, TextView view, int position, long id) {
-//            TextView textView = view;
-////            ArrayList<BHTweet> tweetSelected = (ArrayList<BHTweet>) tweetsListView.getItemAtPosition(position);
-//            Toast.makeText(this, "You clicked on " + textView.getText() + position, Toast.LENGTH_SHORT).show();
-//        }
     }
 
     private void setupListView() {
@@ -56,7 +50,7 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView textView = (TextView) view;
-//      ArrayList<BHTweet> tweetSelected = (ArrayList<BHTweet>) tweetsListView.getItemAtPosition(position);
         Toast.makeText(this, "You clicked on " + textView.getText() + position, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "You clicked on cell number " + position);
     }
 }
