@@ -3,8 +3,13 @@ package com.example.brandonholderman;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.brandonholderman.twitterclient.R;
 
@@ -13,10 +18,10 @@ import java.util.ArrayList;
 import Model.BHJson;
 import Model.BHTweet;
 
-public class HomeTimelineActivity extends AppCompatActivity {
+public class HomeTimelineActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "HomeTimelineActivity";
-    private ListView tweetsListView;
+    ListView tweetsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +29,19 @@ public class HomeTimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_timeline);
 
         setupListView();
+        tweetsListView.setOnItemClickListener(this);
 
         ArrayList<BHTweet> allTweets = BHJson.getTweets(this, true);
 
         for (BHTweet tweet : allTweets) {
             Log.d(TAG, "Tweet Text: " + tweet.text);
         }
+
+//        public void onItemClick(AdapterView<?> parent, TextView view, int position, long id) {
+//            TextView textView = view;
+////            ArrayList<BHTweet> tweetSelected = (ArrayList<BHTweet>) tweetsListView.getItemAtPosition(position);
+//            Toast.makeText(this, "You clicked on " + textView.getText() + position, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void setupListView() {
@@ -39,5 +51,12 @@ public class HomeTimelineActivity extends AppCompatActivity {
         ArrayList<BHTweet> showTweets = BHJson.getTweets(this, true);
         adapter.addAll(showTweets);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView textView = (TextView) view;
+//      ArrayList<BHTweet> tweetSelected = (ArrayList<BHTweet>) tweetsListView.getItemAtPosition(position);
+        Toast.makeText(this, "You clicked on " + textView.getText() + position, Toast.LENGTH_SHORT).show();
     }
 }
