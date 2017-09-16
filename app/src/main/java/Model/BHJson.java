@@ -2,7 +2,12 @@ package Model;
 
 import android.content.Context;
 import java.io.InputStream;
+import java.util.ArrayList;
+
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -26,10 +31,31 @@ public class BHJson {
             stream.read(buffer);
             stream.close();
 
-            jsonString = new String(buffer, "UTF-8")
+            jsonString = new String(buffer, "UTF-8");
         } catch (Exception exception) {
             Log.d(TAG, "getSampleJSONAsString: " + exception);
         }
         return jsonString;
+    }
+
+    public static ArrayList<BHTweet> getTweets(Context context, Boolean useSampleJSON) {
+        ArrayList<BHTweet> tweets = new ArrayList<BHTweet>();
+
+        if(useSampleJSON == true) {
+
+            String tweetsJSONString = getSampleJSONAsString(context);
+
+            try {
+                JSONArray tweetsJson = new JSONArray(getSampleJSONAsString(context));
+
+                for (int i = 0; i < tweetsJson.length(); i++) {
+                    JSONObject singleTweetObject = tweetsJson.getJSONObject(i);
+                    tweets.add(new BHTweet(singleTweetObject));
+                }
+            } catch (Exception exception) {
+                Log.d(TAG, "getTweets: Exception Parsing Tweets Array - " + exception);
+            }
+        }
+        return tweets;
     }
 }
