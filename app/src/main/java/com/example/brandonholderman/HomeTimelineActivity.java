@@ -4,9 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +42,16 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
 
     private void setupListView() {
         tweetsListView = (ListView) findViewById(R.id.tweet_list_view);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2);
+//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2);
+//        tweetsListView.setAdapter(adapter);
+//        ArrayList<BHTweet> showTweets = BHJson.getTweets(this, true);
+//        adapter.addAll(showTweets);
+//        adapter.notifyDataSetChanged();
+
+        ArrayList<BHTweet> allTweets = BHJson.getTweets(this, true);
+
+        TweetListAdapter adapter = new TweetListAdapter(allTweets);
         tweetsListView.setAdapter(adapter);
-        ArrayList<BHTweet> showTweets = BHJson.getTweets(this, true);
-        adapter.addAll(showTweets);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -52,5 +59,44 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
         TextView textView = (TextView) view;
         Toast.makeText(this, "You clicked on " + textView.getText() + "at position " + position, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "You clicked on cell number " + position);
+    }
+
+    class TweetListAdapter extends BaseAdapter {
+        private ArrayList<BHTweet> allTweets;
+
+        public TweetListAdapter(ArrayList<BHTweet> allTweets) {
+            super();
+
+            this.allTweets = allTweets;
+        }
+
+        @Override
+        public int getCount() {
+            return allTweets.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return allTweets.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            BHTweet currentTweet = allTweets.get(i);
+            view = getLayoutInflater().inflate(R.layout.tweet_list_item, null);
+
+            TextView usernameView = (TextView) view.findViewById(R.id.textView_username);
+            TextView tweetTextView = (TextView) view.findViewById(R.id.textView_tweet_text);
+
+            usernameView.setText(currentTweet.user.name);
+            tweetTextView.setText(currentTweet.text);
+
+            return view;
+        }
     }
 }
