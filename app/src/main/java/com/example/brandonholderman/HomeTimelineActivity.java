@@ -50,7 +50,7 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
 
         ArrayList<BHTweet> allTweets = BHJson.getTweets(this, true);
 
-        TweetListAdapter adapter = new TweetListAdapter(allTweets);
+        TimelineAdapter adapter = new TimelineAdapter(allTweets);
         tweetsListView.setAdapter(adapter);
     }
 
@@ -61,7 +61,28 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
         Log.d(TAG, "You clicked on cell number " + position);
     }
 
-    class TweetListAdapter extends BaseAdapter {
+    class TimelineAdapter extends TweetListAdapter {
+
+        public TimelineAdapter(ArrayList<BHTweet> allTweets) {
+            super(allTweets);
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            BHTweet currentTweet = (BHTweet) getItem(i);
+            view = getLayoutInflater().inflate(R.layout.tweet_list_item, null);
+
+            TextView usernameView = (TextView) view.findViewById(R.id.textView_username);
+            TextView tweetTextView = (TextView) view.findViewById(R.id.textView_tweet_text);
+
+            usernameView.setText(currentTweet.user.name);
+            tweetTextView.setText(currentTweet.text);
+
+            return view;
+        }
+    }
+
+    abstract class TweetListAdapter extends BaseAdapter {
         private ArrayList<BHTweet> allTweets;
 
         public TweetListAdapter(ArrayList<BHTweet> allTweets) {
@@ -83,20 +104,6 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
         @Override
         public long getItemId(int i) {
             return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            BHTweet currentTweet = allTweets.get(i);
-            view = getLayoutInflater().inflate(R.layout.tweet_list_item, null);
-
-            TextView usernameView = (TextView) view.findViewById(R.id.textView_username);
-            TextView tweetTextView = (TextView) view.findViewById(R.id.textView_tweet_text);
-
-            usernameView.setText(currentTweet.user.name);
-            tweetTextView.setText(currentTweet.text);
-
-            return view;
         }
     }
 }
