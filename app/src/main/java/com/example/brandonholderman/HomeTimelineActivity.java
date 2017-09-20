@@ -40,7 +40,7 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
 
     private void setupListView() {
         tweetsListView = (ListView) findViewById(R.id.tweet_list_view);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2);
         tweetsListView.setAdapter(adapter);
         ArrayList<BHTweet> showTweets = BHJson.getTweets(this, true);
         adapter.addAll(showTweets);
