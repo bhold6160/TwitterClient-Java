@@ -1,5 +1,6 @@
 package com.example.brandonholderman;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brandonholderman.twitterclient.R;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
+import com.twitter.sdk.android.tweetui.UserTimeline;
 
 import java.util.ArrayList;
 
@@ -30,14 +36,31 @@ public class HomeTimelineActivity extends AppCompatActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_timeline);
 
-        setupListView();
-        tweetsListView.setOnItemClickListener(this);
+        Twitter.initialize(this);
+        TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
 
-        ArrayList<BHTweet> allTweets = BHJson.getTweets(this, true);
-
-        for (BHTweet tweet : allTweets) {
-            Log.d(TAG, "Tweet Text: " + tweet.text);
+        if (session != null) {
+//            setupListView();
+                setupUserTimelineList();
+        } else {
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUserTimelineList();
+//        setupListView();
+//        tweetsListView.setOnItemClickListener(this);
+    }
+
+    private void setupUserTimelineList() {
+        UserTimeline userTimeline = new UserTimeline.Builder().build();
+        TweetTimelineListAdapter userTimelineAdapter = new TweetTimelineListAdapter(this, userTimeline);
+        tweetsListView = (ListView) findViewById(R.id.tweet_list_view);
+        tweetsListView.setAdapter(userTimelineAdapter);
     }
 
     private void setupListView() {
