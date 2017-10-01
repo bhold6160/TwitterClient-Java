@@ -43,7 +43,7 @@ public class BHJson {
 
         if(useSampleJSON == true) {
 
-            String tweetsJSONString = getSampleJSONAsString(context);
+//            String tweetsJSONString = getSampleJSONAsString(context);
 
             try {
                 JSONArray tweetsJson = new JSONArray(getSampleJSONAsString(context));
